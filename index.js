@@ -1,5 +1,6 @@
 require('dotenv').config();
 require('./config/database');
+const logger = require('morgan');
 const express = require('express');
 const app = express();
 const PORT = 4000;
@@ -12,20 +13,29 @@ const socketIO = require('socket.io')(http, {
   }
 });
 
+app.use(logger('dev'));
+app.use(express.json());
 app.use(cors());
 
-socketIO.on('connection', (socket) => {
+socketIO.on('connection', socket => {
   console.log(`${socket.id} user just connected!`);
+
+  socket.on('message', data => {
+    socketIO.emit('messageResponse', data);
+  });
+
+  socket.on('typing', data => socket.broadcast.emit('typingResponse', data));
+  
   socket.on('disconnect', () => {
     console.log('A user disconnected');
   });
 });
 
-app.get('/api', (req, res) => {
-  res.json({
-    message: 'Hello world',
-  });
-});
+app.use(require('./config/checkToken'));
+
+app.use('/api/users', require('./routes/api/users'));
+const ensureLoggedIn = require('./config/ensureLoggedIn');
+app.use('/api/conversations', ensureLoggedIn, require('./routes/api/conversations'));
 
 http.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
