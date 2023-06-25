@@ -8,7 +8,7 @@ module.exports = {
 };
 
 async function index(req, res) {
-
+    res.json('hello');
 }
 
 async function create(req, res) {
