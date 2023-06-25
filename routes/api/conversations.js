@@ -3,12 +3,12 @@ const router = express.Router();
 const conversationsCtrl = require('../../controllers/api/conversations');
 
 // GET /api/conversations
-router.get('/', itemsCtrl.index);
+router.get('/', conversationsCtrl.index);
 // POST /api/conversations
-router.post('/', itemsCtrl.create);
+router.post('/', conversationsCtrl.create);
 // GET /api/conversations/:id
-router.get('/:id', itemsCtrl.detail);
+router.get('/:id', conversationsCtrl.detail);
 // PUT /api/conversations/:id
-router.put('/:id', itemsCtrl.update);
+router.put('/:id', conversationsCtrl.update);
 
 module.exports = router;
