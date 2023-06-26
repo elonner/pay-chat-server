@@ -9,7 +9,7 @@ const msgSchema = new Schema({
 });
 
 const conversationSchema = new Schema({
-    users: [Schema.Types.ObjectId],
+    users: [{type: Schema.Types.ObjectId, ref: 'User'}],
     messages: [msgSchema]
 }, {
     timestamps: true

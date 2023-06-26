@@ -13,10 +13,9 @@ const userSchema = new Schema({
     trim: true,
     required: true
   },
-  password: {
-    type: String,
-    required: true
-  }
+  password: { type: String, required: true },
+  imgUrl: { type: String, required: true },
+  activeConvo: {type: Schema.Types.ObjectId, default: null }
 }, {
   timestamps: true,
   toJSON: {
