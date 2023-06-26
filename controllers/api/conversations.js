@@ -5,7 +5,8 @@ module.exports = {
     index,
     create,
     detail,
-    update
+    update,
+    newMsg
 };
 
 async function index(req, res) {
@@ -37,4 +38,14 @@ async function detail(req, res) {
 
 async function update(req, res) {
     
+}
+
+async function newMsg(req, res) {
+    try {
+        const convo = await Conversation.findById(req.params.id);
+        convo.messages.push(req.body);
+        await convo.save();
+    } catch (err) {
+        res.status(400).json(err);
+    }
 }
