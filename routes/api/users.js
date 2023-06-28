@@ -7,10 +7,12 @@ const ensureLoggedIn = require('../../config/ensureLoggedIn');
 
 // GET /api/users 
 router.get('/', ensureLoggedIn, usersCtrl.index);
+// GET /api/users/available
+router.get('/available', ensureLoggedIn, usersCtrl.available);
 // GET /api/users/:id
 router.get('/:id', ensureLoggedIn, usersCtrl.detail);
-// PUT /api/users/:id/:conversation
-router.put('/:id', ensureLoggedIn, usersCtrl.update);
+// PUT /api/users/:id/setActiveConvo
+router.put('/:id/setActiveConvo', ensureLoggedIn, usersCtrl.setActiveConvo);
 // POST /api/users (create a user - sign up)
 router.post('/', usersCtrl.create);
 // POST /api/users/login

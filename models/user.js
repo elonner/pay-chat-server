@@ -5,8 +5,6 @@ const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 6;
 
 const userSchema = new Schema({
-  first: {type: String, required: true},
-  last: {type: String, required: true},
   username: {
     type: String,
     unique: true,
@@ -14,8 +12,6 @@ const userSchema = new Schema({
     required: true
   },
   password: { type: String, required: true },
-  imgUrl: { type: String, required: true },
-  activeConvo: {type: Schema.Types.ObjectId, default: null }
 }, {
   timestamps: true,
   toJSON: {
