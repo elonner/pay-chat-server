@@ -56,7 +56,9 @@ async function index(req, res) {
                 path: 'activeConvo',
                 populate: {
                     path: 'profiles',
-                    model: 'Profile'
+                    populate: {
+                        path: 'user'
+                    }
                 }
             })
             .exec();
@@ -101,7 +103,9 @@ async function detail(req, res) {
                 path: 'activeConvo',
                 populate: {
                     path: 'profiles',
-                    model: 'Profile'
+                    populate: {
+                        path: 'user'
+                    }
                 }
             })
             .exec();
