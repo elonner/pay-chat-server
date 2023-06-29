@@ -40,8 +40,14 @@ async function create(req, res) {
         }
 
         const convo = await Conversation.create({ profiles: [profile, other] });
+        await convo
+            .populate({
+                path: 'profiles',
+                populate: { path: 'user' }
+            });
         res.json(convo);
     } catch (err) {
+        console.log(err);
         res.status(400).json(err);
     }
 }
@@ -66,7 +72,7 @@ async function update(req, res) {
 
 async function newMsg(req, res) {
     try {
-        console.log(req.body);
+        // console.log(req.body);
         const message = await Message.create(req.body.message);
         res.json(message);
     } catch (err) {
@@ -76,7 +82,7 @@ async function newMsg(req, res) {
 
 async function messages(req, res) {
     try {
-        const messages = await Message.find({conversation: req.params.id})
+        const messages = await Message.find({ conversation: req.params.id })
             .populate('sender recipient conversation')
             .exec();
         res.json(messages);
