@@ -74,6 +74,7 @@ async function newMsg(req, res) {
     try {
         // console.log(req.body);
         const message = await Message.create(req.body.message);
+        await message.populate('sender recipient conversation');
         res.json(message);
     } catch (err) {
         res.status(400).json(err);

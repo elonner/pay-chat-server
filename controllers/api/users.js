@@ -29,6 +29,16 @@ async function setActiveConvo(req, res) {
     try {
         const profile = await Profile.findOne({ user: req.params.id });
         if (!!req.body.activeConvo) profile.activeConvo = req.body.activeConvo._id;
+        await profile
+            .populate({
+                path: 'activeConvo',
+                populate: {
+                    path: 'profiles',
+                    populate: {
+                        path: 'user'
+                    }
+                }
+            });
         await profile.save();
         res.json(profile)
     } catch (err) {
@@ -87,7 +97,15 @@ async function available(req, res) {
             user: { $ne: req.user._id },
             _id: { $nin: excludedProfiles }
         })
-            .populate('activeConvo')
+            .populate({
+                path: 'activeConvo',
+                populate: {
+                    path: 'profiles',
+                    populate: {
+                        path: 'user'
+                    }
+                }
+            })
             .exec();
 
         res.json(profiles);
