@@ -78,6 +78,8 @@ async function index(req, res) {
     }
 }
 
+
+// can prolly get rid of this
 async function available(req, res) {
     try {
         // const profiles = await Profile.find({ user: { $ne: req.user._id } })
@@ -129,6 +131,7 @@ async function detail(req, res) {
             .exec();
         res.json(profile);
     } catch (err) {
+        console.log(err);
         res.status(400).json(err);
     }
 }

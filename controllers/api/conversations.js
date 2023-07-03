@@ -9,7 +9,7 @@ module.exports = {
     detail,
     update,
     newMsg,
-    messages
+    messages,
 };
 
 async function index(req, res) {
@@ -20,9 +20,11 @@ async function index(req, res) {
                 path: 'profiles',
                 populate: { path: 'user' }
             })
+            .populate('lastMsg')
             .exec();
         res.json(convos);
     } catch (err) {
+        console.log(err);
         res.status(400).json(err);
     }
 }
@@ -44,7 +46,7 @@ async function create(req, res) {
             .populate({
                 path: 'profiles',
                 populate: { path: 'user' }
-            });
+            })
         res.json(convo);
     } catch (err) {
         console.log(err);
@@ -59,6 +61,7 @@ async function detail(req, res) {
                 path: 'profiles',
                 populate: { path: 'user' }
             })
+            .populate('lastMsg')
             .exec();
         res.json(convo);
     } catch (err) {
@@ -72,15 +75,19 @@ async function update(req, res) {
 
 async function newMsg(req, res) {
     try {
-        // console.log(req.body);
         const message = await Message.create(req.body.message);
         await message.populate('sender recipient conversation');
+        const convo = await Conversation.findById(message.conversation._id);
+        convo.lastMsg = message;
+        await convo.save();
         res.json(message);
     } catch (err) {
         res.status(400).json(err);
     }
 }
 
+
+// only fetch a certain amount before reload
 async function messages(req, res) {
     try {
         const messages = await Message.find({ conversation: req.params.id })
