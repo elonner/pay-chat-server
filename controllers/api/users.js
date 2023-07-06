@@ -53,6 +53,7 @@ async function login(req, res) {
         // Check if the password matches
         const match = await bcrypt.compare(req.body.password, user.password);
         if (!match) throw new Error();
+        res.set('Access-Control-Allow-Origin', 'https://pay-chat-q8bh3exvc-elonner.vercel.app');
         res.json(createJWT(user));
     } catch {
         res.status(400).json('Bad Credentials');
