@@ -9,7 +9,7 @@ const http = require('http').Server(app);
 const cors = require('cors');
 const socketIO = require('socket.io')(http, {
   cors: {
-      origin: "https://pay-chat-web-elonner.vercel.app"
+      origin: process.env.NODE_ENV === 'production' ? process.env.CLIENT_URL : 'http://localhost:3000'
   }
 });
 
